@@ -1,0 +1,459 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IGCSE English Listening Exam - 0510/23</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+        
+        body { font-family: 'Inter', sans-serif; background-color: #f3f4f6; }
+        .exam-container { max-width: 1200px; margin: 0 auto; height: 100vh; display: flex; flex-direction: column; }
+        .sidebar { width: 260px; border-right: 1px solid #e5e7eb; background: white; overflow-y: auto; }
+        .main-content { flex: 1; background: #fff; overflow-y: auto; padding: 1.5rem; }
+        .nav-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 8px; padding: 1rem; }
+        .nav-item { aspect-ratio: 1; display: flex; align-items: center; justify-content: center; border: 1px solid #d1d5db; border-radius: 4px; font-size: 0.875rem; cursor: pointer; transition: all 0.2s; }
+        .nav-item.active { background-color: #2563eb; color: white; border-color: #2563eb; }
+        .nav-item.answered { background-color: #dbeafe; border-color: #2563eb; color: #1e40af; }
+        
+        .option-card { border: 2px solid #e5e7eb; border-radius: 8px; padding: 0.75rem; margin-bottom: 0.5rem; cursor: pointer; transition: all 0.2s; display: flex; align-items: center; }
+        .option-card:hover { border-color: #93c5fd; background-color: #eff6ff; }
+        .option-card.selected { border-color: #2563eb; background-color: #eff6ff; }
+
+        /* Exercise 1 Single Row Layout */
+        .options-row-1 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1rem; }
+        .image-container { width: 100%; height: 140px; background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 6px; display: flex; align-items: center; justify-content: center; margin-top: 0.5rem; overflow: hidden; }
+        .image-container img { max-width: 100%; max-height: 100%; object-fit: contain; }
+
+        .option-letter { width: 28px; height: 28px; border: 1px solid #d1d5db; border-radius: 4px; display: flex; align-items: center; justify-content: center; margin-right: 0.75rem; font-weight: 600; flex-shrink: 0; font-size: 0.875rem; }
+        .selected .option-letter { background-color: #2563eb; color: white; border-color: #2563eb; }
+
+        .paired-question { border-top: 1px solid #f3f4f6; padding-top: 1.5rem; margin-top: 1.5rem; }
+        
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
+    </style>
+</head>
+<body class="bg-gray-100">
+
+<!-- Home Screen / Instructions -->
+<div id="home-screen" class="fixed inset-0 bg-white z-[100] flex items-center justify-center p-6">
+    <div class="max-w-2xl w-full bg-white rounded-2xl shadow-2xl border border-gray-100 p-10">
+        <div class="text-center mb-8">
+            <h1 class="text-4xl font-extrabold text-red-600 mb-2">IGCS Listening 0510 / 0511</h1>
+            <p class="text-blue-600 font-bold text-lg">Compiled by Amanullah Khan +966568959394</p>
+        </div>
+
+        <div class="bg-blue-50 rounded-xl p-8 mb-8 border border-blue-100">
+            <h2 class="text-xl font-bold text-gray-800 mb-4 flex items-center gap-2">
+                <i class="fas fa-info-circle text-blue-600"></i> Exam Instructions
+            </h2>
+            <ul class="space-y-4 text-gray-700 font-medium">
+                <li class="flex gap-3">
+                    <i class="fas fa-desktop mt-1 text-blue-500 flex-shrink-0"></i>
+                    <span><strong>Device Requirement:</strong> This exam must be taken on a computer or tablet; the interface is not compatible with mobile devices.</span>
+                </li>
+                <li class="flex gap-3">
+                    <i class="fas fa-expand mt-1 text-blue-500 flex-shrink-0"></i>
+                    <span><strong>Display:</strong> Please utilize the Full Screen button to optimize your viewing area.</span>
+                </li>
+                <li class="flex gap-3">
+                    <i class="fas fa-volume-up mt-1 text-blue-500 flex-shrink-0"></i>
+                    <span><strong>Audio Controls:</strong> Select the Audio icon to begin playback. You may click it again at any time to pause.</span>
+                </li>
+                <li class="flex gap-3">
+                    <i class="fas fa-clock mt-1 text-blue-500 flex-shrink-0"></i>
+                    <span><strong>Time Limit:</strong> You have 55 minutes to complete the examination.</span>
+                </li>
+            </ul>
+        </div>
+
+        <button onclick="startExam()" class="w-full bg-blue-600 text-white text-xl font-bold py-4 rounded-xl hover:bg-blue-700 transition-all shadow-lg shadow-blue-200 flex items-center justify-center gap-3">
+            Start Exam <i class="fas fa-play"></i>
+        </button>
+    </div>
+</div>
+
+<div id="app" class="exam-container hidden">
+    <header class="bg-white border-b border-gray-200 px-6 py-4 flex justify-between items-center shadow-sm">
+        <div class="flex flex-col">
+            <div class="flex items-center gap-4">
+                <h1 class="text-xl font-bold text-red-600">IGCS Listening 0510 / 0511</h1>
+                <span class="bg-gray-100 text-gray-600 px-3 py-1 rounded-full text-xs font-medium uppercase">0510/23 Oct/Nov 2024</span>
+            </div>
+            <div class="text-blue-600 text-sm font-bold mt-1">Compiled by Amanullah Khan +966568959394</div>
+        </div>
+        
+        <div class="flex items-center gap-4">
+            <button id="fullscreen-btn" onclick="toggleFullscreen()" class="p-2 text-gray-500 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-all" title="Toggle Fullscreen">
+                <i id="fullscreen-icon" class="fas fa-expand text-xl"></i>
+            </button>
+
+            <div class="flex items-center gap-3 bg-blue-50 px-4 py-2 rounded-lg border border-blue-100">
+                <button id="audio-btn" class="text-blue-600 hover:text-blue-800 transition-colors">
+                    <i id="audio-icon" class="fas fa-volume-up text-2xl"></i>
+                </button>
+                <div class="text-sm">
+                    <div class="font-semibold text-blue-900">Exam Audio</div>
+                    <div id="audio-status" class="text-xs text-blue-700">Click to Play</div>
+                </div>
+                <audio id="exam-audio" src="exam03.mp3"></audio>
+            </div>
+            <div class="text-right">
+                <div id="timer" class="text-xl font-mono font-bold text-gray-700">55:00</div>
+                <div class="text-xs text-gray-500 uppercase tracking-wider">Time Remaining</div>
+            </div>
+            <button onclick="showConfirmSubmit()" class="bg-slate-800 text-white px-6 py-2 rounded font-semibold hover:bg-slate-700 transition-colors">Finish</button>
+        </div>
+    </header>
+
+    <div class="flex flex-1 overflow-hidden">
+        <aside class="sidebar flex flex-col">
+            <div class="p-4 border-b bg-gray-50"><h2 class="font-bold text-gray-700 text-sm uppercase">Navigation</h2></div>
+            <div id="nav-container" class="nav-grid"></div>
+            <div class="mt-auto p-4 bg-gray-50 border-t">
+                <div class="flex justify-between text-xs font-bold text-gray-500 mb-1">
+                    <span>Progress</span>
+                    <span id="answered-count">0 / 40</span>
+                </div>
+                <div class="w-full bg-gray-200 rounded-full h-1.5"><div id="progress-bar" class="bg-blue-600 h-1.5 rounded-full transition-all" style="width: 0%"></div></div>
+            </div>
+        </aside>
+
+        <main class="main-content">
+            <div id="question-view" class="max-w-4xl mx-auto">
+                <div id="exercise-header" class="mb-6">
+                    <span id="exercise-label" class="text-xs font-black text-blue-600 uppercase tracking-widest border-b-2 border-blue-600 pb-1">Exercise 1</span>
+                </div>
+                <div id="questions-area"></div>
+            </div>
+
+            <div id="result-view" class="hidden max-w-4xl mx-auto py-4">
+                <div class="bg-white rounded-xl shadow-lg border p-8">
+                    <div class="border-b pb-6 mb-6">
+                        <h2 class="text-2xl font-bold text-gray-900">Exam Performance Summary</h2>
+                        <p class="text-gray-500 text-sm">Cambridge IGCSE™ Listening 0510/23 • Oct/Nov 2024</p>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+                        <div class="bg-blue-50 p-6 rounded-xl border border-blue-100 flex flex-col items-center">
+                            <span class="text-blue-600 font-bold text-xs uppercase mb-1">Raw Score</span>
+                            <span id="total-score" class="text-5xl font-black text-blue-900">0/40</span>
+                        </div>
+                        <div class="bg-indigo-50 p-6 rounded-xl border border-indigo-100 flex flex-col items-center">
+                            <span class="text-indigo-600 font-bold text-xs uppercase mb-1">Percentage</span>
+                            <span id="percentage" class="text-5xl font-black text-indigo-900">0%</span>
+                        </div>
+                        <div class="bg-gray-50 p-6 rounded-xl border border-gray-200 flex flex-col items-center">
+                            <span class="text-gray-600 font-bold text-xs uppercase mb-1">Estimated Grade</span>
+                            <span id="final-grade" class="text-5xl font-black text-gray-900">U</span>
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-8">
+                        <div class="space-y-4">
+                            <h3 class="font-bold text-gray-700 border-b pb-2 text-sm uppercase">Breakdown</h3>
+                            <div id="exercise-marks" class="space-y-4"></div>
+                        </div>
+                        <div class="bg-yellow-50 p-6 rounded-xl border border-yellow-100">
+                            <h3 class="font-bold text-yellow-800 text-sm uppercase mb-3 text-center">Grade Thresholds (C23)</h3>
+                            <div class="space-y-1 text-sm font-bold text-yellow-700">
+                                <div class="flex justify-between px-4"><span>Grade A:</span> <span>36+</span></div>
+                                <div class="flex justify-between px-4"><span>Grade B:</span> <span>33+</span></div>
+                                <div class="flex justify-between px-4"><span>Grade C:</span> <span>30+</span></div>
+                                <div class="flex justify-between px-4"><span>Grade D:</span> <span>27+</span></div>
+                                <div class="flex justify-between px-4"><span>Grade E:</span> <span>23+</span></div>
+                                <div class="flex justify-between px-4"><span>Grade F:</span> <span>20+</span></div>
+                                <div class="flex justify-between px-4"><span>Grade G:</span> <span>17+</span></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="border-t pt-8 flex justify-center">
+                        <button onclick="location.reload()" class="bg-blue-600 text-white px-10 py-3 rounded-lg font-bold hover:bg-blue-700 shadow-lg shadow-blue-200 transition-all">Retake Exam</button>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <footer id="exam-footer" class="bg-white border-t border-gray-200 px-6 py-4 flex justify-between items-center">
+        <button id="prev-btn" onclick="prevQuestion()" class="flex items-center gap-2 text-gray-600 font-bold hover:text-gray-900 disabled:opacity-20 uppercase text-xs">
+            <i class="fas fa-chevron-left"></i> Previous
+        </button>
+        <div id="question-indicator" class="text-gray-400 font-bold text-xs uppercase tracking-widest">Question 1 of 40</div>
+        <button id="next-btn" onclick="nextQuestion()" class="flex items-center gap-2 bg-blue-600 text-white px-10 py-2 rounded font-bold hover:bg-blue-700 uppercase text-xs">
+            Next <i class="fas fa-chevron-right"></i>
+        </button>
+    </footer>
+
+    <div id="modal-overlay" class="fixed inset-0 bg-black/50 hidden flex items-center justify-center z-50 backdrop-blur-sm">
+        <div class="bg-white rounded-xl p-8 max-w-md w-full mx-4 shadow-2xl">
+            <h3 class="text-2xl font-bold text-gray-900 mb-2">Final Submission</h3>
+            <p class="text-gray-500 mb-6">Unanswered: <span id="unanswered-count" class="font-bold text-red-500">0</span>. Ready to see your grade?</p>
+            <div class="flex gap-4">
+                <button onclick="hideModal()" class="flex-1 px-4 py-2 border rounded font-bold text-gray-600 hover:bg-gray-50">Back</button>
+                <button onclick="submitExam()" class="flex-1 px-4 py-2 bg-blue-600 text-white rounded font-bold hover:bg-blue-700">Submit Exam</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    const examData = [
+        // Exercise 1: Pictures (Q1-8)
+        ...Array.from({length: 8}, (_, i) => ({ id: i + 1, ex: 1, text: [
+            "Where are the friends going to spend their break?", 
+            "What did the boy enjoy the most during the trip?", 
+            "Which instrument is the girl going to play at the school concert?", 
+            "What time is the yoga class the man wants to take?", 
+            "Which item is on special offer at the shop?", 
+            "Where is the man hoping to stay on his holiday?", 
+            "How did the girl learn to draw?", 
+            "What is the homework for the following week?"
+        ][i], options: ["A", "B", "C", "D"], correct: ["B", "A", "D", "C", "B", "C", "D", "D"][i] })),
+        
+        // Exercise 2: Paired MCQ (Q9-18)
+        { id: 9, ex: 2, text: "How does the girl feel about the history project?", options: ["nervous", "optimistic", "excited"], correct: "B" },
+        { id: 10, ex: 2, text: "The boy has done some preparation using", options: ["borrowed notes.", "library resources.", "the internet."], correct: "C" },
+        { id: 11, ex: 2, text: "The boy suggests that the tennis coach was", options: ["relaxed.", "encouraging.", "demanding."], correct: "C" },
+        { id: 12, ex: 2, text: "The boy's friend can sign up for the tennis class by", options: ["calling the club.", "sending an email.", "completing a form."], correct: "A" },
+        { id: 13, ex: 2, text: "The guest was most unhappy about", options: ["the level of noise.", "the attitude of the staff.", "the quality of the food."], correct: "C" },
+        { id: 14, ex: 2, text: "Following her complaint, the guest received", options: ["a reduction in her bill.", "free entry to the spa.", "a special rate for the next visit."], correct: "A" },
+        { id: 15, ex: 2, text: "The speaker first learnt how to cook", options: ["from her friends.", "from her family.", "from online tutorials."], correct: "C" },
+        { id: 16, ex: 2, text: "The speaker says that she especially enjoys", options: ["cooking healthy food.", "inviting people for meals.", "being able to save money."], correct: "B" },
+        { id: 17, ex: 2, text: "The painting has been shown at the gallery", options: ["for about a week.", "for two months.", "for nearly two years."], correct: "A" },
+        { id: 18, ex: 2, text: "What is unusual about the painting?", options: ["the woman's emotion", "the woman's clothes", "the woman's hairstyle"], correct: "C" },
+        
+        // Exercise 3: Talk (Q19-26)
+        ...Array.from({length: 8}, (_, i) => ({ id: i + 19, ex: 3, text: [
+            "Nina says that barn owls often live", 
+            "Barn owls are often seen in areas covered in grass, as these provide", 
+            "Nina mentions that unlike other birds, barn owls can", 
+            "Barn owls typically lay their first eggs in", 
+            "Young owls typically spend ... with their mother.", 
+            "Nina was surprised to learn that ... are a threat to barn owls.", 
+            "The Owl Box Project", 
+            "Right now, the best way to help the Owl Box Project is by"
+        ][i], options: [
+            ["in urban areas.", "in woods and fields.", "quite close to people."],
+            ["safety from other animals.", "a source of food.", "a quiet environment."],
+            ["fly silently.", "hear very well.", "see in the dark."],
+            ["March.", "April.", "May."],
+            ["between 8 and 20 days", "at least 30 days", "just over 8 weeks"],
+            ["bad weather conditions", "chemicals used in farming", "low levels of food supplies"],
+            ["supports owls in different ways.", "was set up by a group of farmers.", "is small and community-based."],
+            ["donating money.", "building nesting boxes.", "sharing information about their work."]
+        ][i], correct: ["C", "B", "A", "B", "C", "A", "A", "C"][i] })),
+        
+        // Exercise 4: Matching Statements (Q27-32)
+        ...Array.from({length: 6}, (_, i) => ({ id: i + 27, ex: 4, text: `Speaker ${i+1}`, options: ["A", "B", "C", "D", "E", "F", "G", "H"], correct: ["G", "C", "D", "H", "F", "E"][i] })),
+        
+        // Exercise 5: Juggling (Q33-40)
+        ...Array.from({length: 8}, (_, i) => ({ id: i + 33, ex: 5, text: [
+            "How did Max learn how to juggle?", 
+            "Max gave his first juggling performance", 
+            "What did Max find most difficult about juggling in public for the first time?", 
+            "Max says that the main thing to remember when you learn how to juggle is", 
+            "What does Max say about choosing which items to juggle?", 
+            "What do Max's parents think about his job?", 
+            "In the future, Max is planning to", 
+            "Max doesn't want to try for the world record because"
+        ][i], options: [
+            ["by watching TV", "from a family member", "by attending a class"],
+            ["thanks to being encouraged by a friend.", "to help out someone he knew.", "to show off his juggling skills."],
+            ["making the children laugh", "not dropping any of the items", "feeling comfortable with the audience"],
+            ["not to get discouraged.", "to try to concentrate.", "to practise as often as possible."],
+            ["The items should be large enough to be easily seen.", "Messy items should be avoided if possible.", "Lighter items work better than heavy ones."],
+            ["They wish it earned him more money.", "They'd prefer him to work locally.", "They've decided it would be better as a hobby."],
+            ["go back to university.", "perform on television.", "teach others how to juggle."],
+            ["he can't afford to pay for it.", "he isn't skilled enough.", "he doesn't enjoy competing."]
+        ][i], correct: ["A", "B", "C", "B", "A", "B", "C", "C"][i] }))
+    ];
+
+    const matchingOptions = { 
+        "A": "I think that the tickets were overpriced.", 
+        "B": "I was surprised by how much I enjoyed it.", 
+        "C": "Festivals are a great place to meet new people.", 
+        "D": "It can be hard work to organise a festival.", 
+        "E": "Visiting a festival made me start a new hobby.", 
+        "F": "I was a bit concerned about the safety at the event.", 
+        "G": "I don't enjoy festivals as much as I used to.", 
+        "H": "I was impressed by the skills shown at the event." 
+    };
+
+    let currentQuestionIndex = 0;
+    let userAnswers = {};
+    let examFinished = false;
+    let timeRemaining = 55 * 60; 
+
+    function startExam() {
+        document.getElementById('home-screen').classList.add('hidden');
+        document.getElementById('app').classList.remove('hidden');
+        startTimer();
+    }
+
+    function initNav() {
+        const container = document.getElementById('nav-container');
+        container.innerHTML = '';
+        examData.forEach((q, index) => {
+            const div = document.createElement('div');
+            div.className = 'nav-item'; div.textContent = q.id; div.id = `nav-${index}`;
+            div.onclick = () => goToQuestion(index);
+            container.appendChild(div);
+        });
+        updateNavStatus();
+    }
+
+    function updateNavStatus() {
+        examData.forEach((q, index) => {
+            const el = document.getElementById(`nav-${index}`); if (!el) return;
+            el.className = 'nav-item';
+            if (index === currentQuestionIndex) el.classList.add('active');
+            if (userAnswers[q.id]) el.classList.add('answered');
+        });
+        const count = Object.keys(userAnswers).length;
+        document.getElementById('answered-count').textContent = `${count} / 40`;
+        document.getElementById('progress-bar').style.width = `${(count / 40) * 100}%`;
+    }
+
+    function createOptionCard(q, opt, letter) {
+        const card = document.createElement('div');
+        card.className = `option-card ${userAnswers[q.id] === letter ? 'selected' : ''}`;
+        card.onclick = () => { userAnswers[q.id] = letter; renderQuestion(); };
+        
+        if (q.ex === 1) {
+            const imgFile = `q${q.id}_image_${letter.toLowerCase()}.png`;
+            card.className = `flex flex-col border-2 rounded-lg p-2 cursor-pointer transition-all ${userAnswers[q.id] === letter ? 'border-blue-600 bg-blue-50' : 'border-gray-200 hover:border-blue-300'}`;
+            card.innerHTML = `
+                <div class="flex items-center mb-2"><div class="option-letter">${letter}</div></div>
+                <div class="image-container">
+                    <img src="${imgFile}" alt="${letter}" onerror="this.outerHTML='<div class=\'text-[10px] text-gray-400\'>Image: ${imgFile}</div>'">
+                </div>
+            `;
+        } else {
+            const text = q.ex === 4 ? matchingOptions[letter] : opt;
+            card.innerHTML = `<div class="option-letter">${letter}</div><div class="text-sm font-medium text-gray-700">${text}</div>`;
+        }
+        return card;
+    }
+
+    function renderQuestion() {
+        if (examFinished) return;
+        const q = examData[currentQuestionIndex];
+        const container = document.getElementById('questions-area');
+        document.getElementById('exercise-label').textContent = `Exercise ${q.ex}`;
+        document.getElementById('question-indicator').textContent = `Question ${currentQuestionIndex + 1} of 40`;
+        container.innerHTML = '';
+
+        const renderSingle = (questionObj, target) => {
+            const wrap = document.createElement('div');
+            wrap.className = "mb-8";
+            wrap.innerHTML = `<h2 class="text-xl font-bold text-gray-800 mb-4">${questionObj.id}. ${questionObj.text}</h2>`;
+            const optCont = document.createElement('div');
+            optCont.className = questionObj.ex === 1 ? "options-row-1" : "space-y-2";
+            questionObj.options.forEach((opt, i) => {
+                const letter = questionObj.ex === 1 || questionObj.ex === 4 ? opt : String.fromCharCode(65 + i);
+                optCont.appendChild(createOptionCard(questionObj, opt, letter));
+            });
+            wrap.appendChild(optCont);
+            target.appendChild(wrap);
+        };
+
+        if (q.ex === 2) {
+            const pairStart = q.id % 2 === 1 ? currentQuestionIndex : currentQuestionIndex - 1;
+            renderSingle(examData[pairStart], container);
+            if (examData[pairStart + 1]) {
+                const divider = document.createElement('div');
+                divider.className = "paired-question";
+                container.appendChild(divider);
+                renderSingle(examData[pairStart + 1], container);
+            }
+        } else {
+            renderSingle(q, container);
+        }
+
+        document.getElementById('prev-btn').disabled = currentQuestionIndex === 0;
+        document.getElementById('next-btn').innerHTML = currentQuestionIndex >= 39 ? 'Review' : 'Next';
+        updateNavStatus();
+    }
+
+    function goToQuestion(index) { currentQuestionIndex = index; renderQuestion(); }
+    function nextQuestion() { if (currentQuestionIndex < 39) { currentQuestionIndex++; renderQuestion(); } else { showConfirmSubmit(); } }
+    function prevQuestion() { if (currentQuestionIndex > 0) { currentQuestionIndex--; renderQuestion(); } }
+
+    function startTimer() {
+        const timerEl = document.getElementById('timer');
+        const interval = setInterval(() => {
+            if (examFinished) { clearInterval(interval); return; }
+            const mins = Math.floor(timeRemaining / 60); const secs = timeRemaining % 60;
+            timerEl.textContent = `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
+            if (timeRemaining <= 0) { clearInterval(interval); submitExam(); }
+            timeRemaining--;
+        }, 1000);
+    }
+
+    const examAudio = document.getElementById('exam-audio');
+    const audioBtn = document.getElementById('audio-btn');
+    const audioStatus = document.getElementById('audio-status');
+    audioBtn.onclick = () => {
+        if (examAudio.paused) {
+            examAudio.play().then(() => { audioStatus.textContent = 'Playing...'; }).catch(() => audioStatus.textContent = 'exam03.mp3 not found');
+        } else { examAudio.pause(); audioStatus.textContent = 'Paused'; }
+    };
+
+    function toggleFullscreen() {
+        if (!document.fullscreenElement) {
+            document.documentElement.requestFullscreen();
+        } else {
+            document.exitFullscreen();
+        }
+    }
+
+    function showConfirmSubmit() {
+        const unanswered = 40 - Object.keys(userAnswers).length;
+        document.getElementById('unanswered-count').textContent = unanswered;
+        document.getElementById('modal-overlay').classList.remove('hidden');
+    }
+    function hideModal() { document.getElementById('modal-overlay').classList.add('hidden'); }
+
+    function getGrade(score) {
+        if (score >= 36) return 'A';
+        if (score >= 33) return 'B';
+        if (score >= 30) return 'C';
+        if (score >= 27) return 'D'; // Threshold from C23 Table
+        if (score >= 23) return 'E';
+        if (score >= 20) return 'F';
+        if (score >= 17) return 'G';
+        return 'U';
+    }
+
+    function submitExam() {
+        examFinished = true; hideModal();
+        document.getElementById('question-view').classList.add('hidden');
+        document.getElementById('exam-footer').classList.add('hidden');
+        document.getElementById('result-view').classList.remove('hidden');
+        
+        let total = 0; let exMarks = { 1:0, 2:0, 3:0, 4:0, 5:0 };
+        examData.forEach(q => { if (userAnswers[q.id] === q.correct) { total++; exMarks[q.ex]++; } });
+
+        document.getElementById('total-score').textContent = `${total}/40`;
+        document.getElementById('percentage').textContent = `${Math.round((total/40)*100)}%`;
+        document.getElementById('final-grade').textContent = getGrade(total);
+
+        const breakdown = document.getElementById('exercise-marks');
+        breakdown.innerHTML = '';
+        const exTotals = { 1:8, 2:10, 3:8, 4:6, 5:8 };
+        for (let i = 1; i <= 5; i++) {
+            const p = Math.round((exMarks[i]/exTotals[i])*100);
+            breakdown.innerHTML += `<div><div class="flex justify-between text-xs font-bold mb-1"><span>Exercise ${i}</span><span>${exMarks[i]}/${exTotals[i]}</span></div>
+                <div class="w-full bg-gray-100 h-1.5 rounded-full"><div class="bg-blue-600 h-1.5 rounded-full" style="width:${p}%"></div></div></div>`;
+        }
+    }
+
+    window.onload = () => { initNav(); renderQuestion(); };
+</script>
+</body>
+</html>
