@@ -441,7 +441,7 @@
   .finish-btn:hover { background: #102B54; }
 
   /* ===== LAYOUT ===== */
-  .app-body { display: flex; flex: 1; overflow: hidden; }
+  .app-body { display: flex; flex: 1; overflow: hidden; min-height: 0; }
 
   /* ===== SIDEBAR ===== */
   .sidebar {
@@ -1022,6 +1022,11 @@
   .ri-ans strong { font-weight: 600; display: block; font-size: 11px; opacity: 0.75; margin-bottom: 2px; }
 
   audio { display: none; }
+
+  /* Result screen: ensure main area scrolls */
+  .result-active .main-area {
+    overflow-y: auto;
+  }
 
   /* Matching exercise */
   .matching-header {
@@ -1655,6 +1660,7 @@ function getGrade(s) {
 function submitExam() {
   examFinished = true;
   hideModal();
+  document.getElementById('app').classList.add('result-active');
   document.getElementById('question-view').style.display = 'none';
   document.getElementById('app-footer').style.display = 'none';
   document.getElementById('result-view').style.display = 'block';
@@ -1780,7 +1786,7 @@ function toggleReview() {
   } else {
     sec.classList.add('visible');
     btn.textContent = 'Hide Review';
-    sec.scrollIntoView({ behavior: 'smooth' });
+    setTimeout(() => sec.scrollIntoView({ behavior: 'smooth' }), 50);
   }
 }
 
